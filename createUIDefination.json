@@ -576,7 +576,7 @@
                   ]
             },
             {
-                "name": "customer",
+                "name": "CustomerInfo",
                 "type": "Microsoft.Common.Section",
                 "label": "Customer Information",
                 "elements": [
@@ -593,7 +593,7 @@
                         }
                     },
                     {
-                        "name": "companyname",
+                        "name": "OwnerCoName",
                         "type": "Microsoft.Common.TextBox",
                         "label": "Company",
                         "placeholder": "",
@@ -607,9 +607,19 @@
                         "visible": true
                     },
                     {
-                        "name": "fullname",
+                        "name": "OwnerSubscription",
+                        "type": "Microsoft.Common.CheckBox",
+                        "label": "Subscription Owner",
+                        "toolTip": "You must have owner permissions on the selected subscription.",
+                        "constraints": {
+                            "required": true,
+                            "validationMessage": "You must be an 'owner' of the subscription."
+                        }
+                    },
+                    {
+                        "name": "OwnerFullName",
                         "type": "Microsoft.Common.TextBox",
-                        "label": "Full Name",
+                        "label": "Contact Name",
                         "placeholder": "",
                         "defaultValue": "",
                         "toolTip": "Use only allowed characters",
@@ -621,19 +631,9 @@
                         "visible": true
                     },
                     {
-                        "name": "SubscriptionOwner",
-                        "type": "Microsoft.Common.CheckBox",
-                        "label": "Subscription Owner",
-                        "toolTip": "You must have owner permissions on the selected subscription.",
-                        "constraints": {
-                            "required": true,
-                            "validationMessage": "You must be an 'owner' of the subscription."
-                        }
-                    },
-                    {
-                        "name": "emailAddress",
+                        "name": "OwnerEmailAddress",
                         "type": "Microsoft.Common.TextBox",
-                        "label": "Email",
+                        "label": "Contact Email",
                         "defaultValue": "",
                         "toolTip": "Please enter a valid email account",
                         "constraints": {
@@ -644,9 +644,9 @@
                         "visible": true
                     },
                     {
-                        "name": "fullname",
+                        "name": "OwnerPhone",
                         "type": "Microsoft.Common.TextBox",
-                        "label": "Full Name",
+                        "label": "Contact Phone",
                         "placeholder": "",
                         "defaultValue": "",
                         "toolTip": "Use only allowed characters",
@@ -697,7 +697,12 @@
             "assignedGroup": "[steps('CitrixConfiguration').assignedGroup]",
             "ctxCustomerID": "[steps('CitrixConfiguration').ctxCustomerID]",
             "ctxApiSecret": "[steps('CitrixConfiguration').ctxApiSecret]",
-            "ctxApiKey": "[steps('CitrixConfiguration').ctxApiKey]"
+            "ctxApiKey": "[steps('CitrixConfiguration').ctxApiKey]",
+            "OwnerSubscription": "[steps('CitrixConfiguration').OwnerSubscription]",
+            "OwnerCoName": "[steps('CustomerInfo').OwnerCoName]",
+            "OwnerFullName": "[steps('CustomerInfo').OwnerFullName]",
+            "OwnerEmailAddress": "[steps('CustomerInfo').OwnerEmailAddress]",
+            "OwnerPhone": "[steps('CustomerInfo').OwnerPhone]"
         }
     }
 }
