@@ -124,7 +124,7 @@
         },
         "Bastion-subnet-ip-prefix":{
             "type": "string",
-            "defaultValue": "192.168.0.0/25",
+            "defaultValue": "192.168.4.0/24",
             "metadata":{
                 "description":"Bastion subnet IP"
             }
@@ -441,7 +441,6 @@
             
 
         },
-
         "BastionHosts":{
             "public-ip-address-name": "[concat(parameters('bastion-host-name'),'-pip')]",
             "bastion-subnet-name": "AzureBastionSubnet"
@@ -535,6 +534,44 @@
                 ]
             }
         },
+        {
+            "apiVersion": "2020-05-01",
+            "type": "Microsoft.Network/publicIPAddresses",
+            "name": "[variables('BastionHosts').public-ip-address-name]",
+            "location": "[parameters('location')]",
+            "sku": {
+                "name": "Standard"
+            },
+            "properties": {
+                "publicIPAllocationMethod": "Static"
+            }
+        },
+        {
+            "apiVersion": "2020-05-01",
+            "type": "Microsoft.Network/bastionHosts",
+            "name": "[parameters('bastion-host-name')]",
+            "location": "[parameters('location')]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Network/publicIpAddresses', variables('BastionHosts').public-ip-address-name)]",
+                "[resourceId('Microsoft.Network/virtualNetworks', parameters('virtualNetworkName'))]",
+                "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), variables('BastionHosts').bastion-subnet-name)]"
+            ],
+            "properties": {
+                "ipConfigurations": [
+                    {
+                        "name": "IpConf",
+                        "properties": {
+                            "subnet": {
+                                "id": "[resourceId('Microsoft.Network/virtualNetworks/subnets', parameters('virtualNetworkName'), variables('BastionHosts').bastion-subnet-name))]"
+                            },
+                            "publicIPAddress": {
+                                "id": "[resourceId('Microsoft.Network/publicIpAddresses', variables('BastionHosts').public-ip-address-name))]"
+                            }
+                        }
+                    }
+                ]
+            }
+        }, 
         {
         "name": "PopulateVariables",
         "type": "Microsoft.Resources/deployments",
@@ -692,5 +729,6 @@
   }
 
 }
+
 
 
