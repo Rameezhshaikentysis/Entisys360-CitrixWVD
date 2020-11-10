@@ -410,21 +410,20 @@
                 "ZoneName": "[parameters('ctxZoneName')]"
             }
         },
-        // "DomainControllers": {
-        //    "availabilitySet": {
-        //         "availabilitySetName": "avl-DomainControllers",
-        //         "availabilitySetPlatformFaultDomainCount": 2,
-        //         "availabilitySetPlatformUpdateDomainCount": 2
-        //     }, 
-        //     "VMConfig": {
-        //         "VMPrefix": "[parameters('DCVMNamePrefix')]",
-        //         "VMSize": "[parameters('DCVMSize')]",
-        //         "storageAccountType": "Premium_LRS",
-        //         "VMAdminUserName": "[parameters('ccUserName')]",
-        //         "VMAdminPassword": "[variables('Global').Password]"
-
-        //     }
-        // },
+        "DomainControllers": {
+            "availabilitySet": {
+                 "availabilitySetName": "avl-DomainControllers",
+                 "availabilitySetPlatformFaultDomainCount": 2,
+                 "availabilitySetPlatformUpdateDomainCount": 2
+             }, 
+             "VMConfig": {
+                 "VMPrefix": "[parameters('DCVMNamePrefix')]",
+                 "VMSize": "[parameters('DCVMSize')]",
+                 "storageAccountType": "Premium_LRS",
+                 "VMAdminUserName": "[parameters('ccUserName')]",
+                 "VMAdminPassword": "[variables('Global').Password]"
+                }
+        },
         "CloudConnectors": {
             "availabilitySet": {
                 "availabilitySetName": "avl-cloudConnectors",
@@ -471,7 +470,7 @@
     },
     "resources": [
         {
-            "name": "[parameters('StorageAccountName')]",
+            "name": "[parameters('Storage')]",
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "2019-06-01",
             "tags": {
@@ -643,51 +642,51 @@
           }
         }
       }
-    }
-    // {
-    //   "name": "[concat('DomainControllersDeployment')]",
-    //   "type": "Microsoft.Resources/deployments",
-    //   "apiVersion": "2019-10-01",
-    //   "dependsOn": [
-    //     "AnsibleVMDeployment"
-    //   ],
-    //   "properties": {
-    //     "mode": "Incremental",
-    //     "templateLink": {
-    //       "uri": "[concat(parameters('_artifactsLocation'), '/nestedtemplates/DomainControllers.json', parameters('_artifactsLocationSasToken'))]",
-    //       "contentVersion": "1.0.0.0"
-    //     },
-    //     "parameters": {
-    //       "DCNamePrefix": {
-    //         "value": "[variables('DomainControllers').VMConfig.VMPrefix]"
-    //       },
-    //       "availabilitySetName": {
-    //           "value": "[variables('DomainControllers').availabilitySet.availabilitySetName]"
-    //       },
-    //       "availabilitySetPlatformFaultDomainCount": {
-    //           "value": "[variables('DomainControllers').availabilitySet.availabilitySetPlatformFaultDomainCount]"
-    //       },
-    //       "availabilitySetPlatformUpdateDomainCount": {
-    //           "value": "[variables('DomainControllers').availabilitySet.availabilitySetPlatformUpdateDomainCount]"
-    //       },
-    //       "DCvirtualMachineSize": {
-    //           "value": "[variables('DomainControllers').VMConfig.VMSize]"
-    //       },
-    //       "virtualNetworkName": {
-    //         "value": "[parameters('virtualNetworkName')]"
-    //       },
-    //       "DCSubnetName": {
-    //         "value": "[parameters('subnet1Name')]"
-    //       },
-    //       "virtualMachineAdminUserName": {
-    //         "value": "[variables('DomainControllers').VMConfig.VMAdminUserName]"
-    //       },
-    //       "virtualMachineAdminPassword": {
-    //         "value": "[variables('DomainControllers').VMConfig.VMAdminPassword]"
-    //       }
-    //     }
-    //   }
-    // }
+    },
+    {
+       "name": "[concat('DomainControllersDeployment')]",
+       "type": "Microsoft.Resources/deployments",
+       "apiVersion": "2019-10-01",
+       "dependsOn": [
+           "AnsibleVMDeployment"
+       ],
+       "properties": {
+         "mode": "Incremental",
+         "templateLink": {
+           "uri": "[concat(parameters('_artifactsLocation'), '/nestedtemplates/DomainControllers.json', parameters('_artifactsLocationSasToken'))]",
+           "contentVersion": "1.0.0.0"
+        },
+         "parameters": {
+           "DCNamePrefix": {
+            "value": "[variables('DomainControllers').VMConfig.VMPrefix]"
+           },
+           "availabilitySetName": {
+            "value": "[variables('DomainControllers').availabilitySet.availabilitySetName]"
+           },
+           "availabilitySetPlatformFaultDomainCount": {
+            "value": "[variables('DomainControllers').availabilitySet.availabilitySetPlatformFaultDomainCount]"
+           },
+           "availabilitySetPlatformUpdateDomainCount": {
+            "value": "[variables('DomainControllers').availabilitySet.availabilitySetPlatformUpdateDomainCount]"
+           },
+           "DCvirtualMachineSize": {
+            "value": "[variables('DomainControllers').VMConfig.VMSize]"
+           },
+           "virtualNetworkName": {
+            "value": "[parameters('virtualNetworkName')]"
+           },
+           "DCSubnetName": {
+            "value": "[parameters('subnet1Name')]"
+           },
+           "virtualMachineAdminUserName": {
+            "value": "[variables('DomainControllers').VMConfig.VMAdminUserName]"
+           },
+           "virtualMachineAdminPassword": {
+            "value": "[variables('DomainControllers').VMConfig.VMAdminPassword]"
+          }
+         }
+       }
+     }
   ],
   "outputs": {
   }
